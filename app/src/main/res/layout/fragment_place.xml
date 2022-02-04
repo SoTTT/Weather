@@ -4,25 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:windowBackground"
-    tools:context=".PlaceFragment">
+    tools:context="com.example.weather.ui.place.PlaceFragment">
 
 
     <ImageView
+        android:id="@+id/bgImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bgImageView"
         android:layout_alignParentBottom="true"
         android:src="@drawable/bg_place" />
 
     <FrameLayout
+        android:id="@+id/actionBarLayout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:id="@+id/actionBarLayout"
         android:background="@color/colorPrimary">
 
+        <EditText
+            android:id="@+id/searchPlaceEdit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/search_bg"
+            android:hint="@string/search_place_edit_hint_text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
 
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionBarLayout"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

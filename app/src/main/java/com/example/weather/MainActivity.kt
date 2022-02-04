@@ -6,12 +6,12 @@ import com.example.weather.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewMainBinding: ActivityMainBinding
+    //private lateinit var viewMainBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        //viewMainBinding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        setContentView(viewMainBinding.root)
+        setContentView(R.layout.activity_main)
     }
 }
 
