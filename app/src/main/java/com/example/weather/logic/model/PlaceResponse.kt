@@ -1,5 +1,6 @@
 package com.example.weather.logic.model
 
+<<<<<<< HEAD
 import com.google.gson.annotations.SerializedName
 
 //定义解析json后产生的数据类结构
@@ -13,3 +14,7 @@ data class Place(
 )
 
 data class Location(val lng: String, val lat: String)
+=======
+class PlaceResponse {
+}
+>>>>>>> ff671ce83b4990ca6c80f5433a02cd096b28bada
