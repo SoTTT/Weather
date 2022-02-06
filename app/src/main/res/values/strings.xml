@@ -6,4 +6,6 @@
 
     <string name="search_place_edit_hint_text">input city</string>
     <string name="no_search_result">未查询到任何地点</string>
+    <string name="separator_for_now_weather">|</string>
+    <string name="title_for_forecast">预报</string>
 </resources>

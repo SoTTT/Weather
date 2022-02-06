@@ -1,6 +1,5 @@
 package com.example.weather
 
-<<<<<<< HEAD
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
@@ -21,8 +20,4 @@ class WeatherApplication : Application() {
         super.onCreate()
         context = applicationContext;
     }
-
-=======
-class WeatherApplication {
->>>>>>> ff671ce83b4990ca6c80f5433a02cd096b28bada
 }
