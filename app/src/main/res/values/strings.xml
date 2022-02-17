@@ -4,8 +4,60 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-    <string name="search_place_edit_hint_text">input city</string>
-    <string name="no_search_result">未查询到任何地点</string>
-    <string name="separator_for_now_weather">|</string>
-    <string name="title_for_forecast">预报</string>
+    <string name="search_place_edit_hint_text">input city name</string>
+    <string name="no_search_result">No location was found</string>
+
+    <string name="title_for_forecast">Forecast</string>
+    <string name="title_for_file_index_card">File Index</string>
+
+    <string name="cold_risk">Cold Index</string>
+    <string name="dressing">Dressing Index</string>
+    <string name="ultraviolet">Ultraviolet</string>
+    <string name="car_washing">Wash Car Index</string>
+    
+
+    <string name="clear">Clear</string>
+
+    <string name="partly_cloud">Partly Cloud</string>
+    
+    <string name="cloudy">Cloudy</string>
+    
+    <string name="wind">Wind</string>
+    
+    <string name="light_rain">Light Rain</string>
+    
+    <string name="moderate_rain">Moderate Rain</string>
+    
+    <string name="heavy_rain">Heavy Rain</string>
+    
+    <string name="storm_rain">Storm Rain</string>
+
+    <string name="thunder_shower">Thunder Shower</string>
+
+    <string name="sleet">Sleet</string>
+
+    <string name="light_snow">Light Snow</string>
+
+    <string name="moderate_snow">Moderate Snow</string>
+
+    <string name="heavy_snow">Heavy Snow</string>
+
+    <string name="storm_snow">Storm Snow</string>
+
+    <string name="hail">Hail</string>
+
+    <string name="light_haze">Light Haze</string>
+
+    <string name="moderate_haze">Moderate Haze</string>
+
+    <string name="heavy_haze">Heavy Haze</string>
+
+    <string name="fog">Fog</string>
+
+    <string name="dust">Dust</string>
+        
+    <string name="air_index">Air Index</string>
+
+    <string name="hint_of_get_sky_information_error">Unable to obtain weather information</string>
+        
 </resources>

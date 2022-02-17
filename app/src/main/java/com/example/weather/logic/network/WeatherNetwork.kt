@@ -15,6 +15,8 @@ object WeatherNetwork {
     //使用ServiceCreator创建代理对象
     private val placeService = ServiceCreator.create<PlaceService>()
 
+    private val weatherService = ServiceCreator.create<WeatherService>()
+
     suspend fun searchPlaces(query: String) = placeService.searchPlace(query).await()
 
     //await是个对Call<T>的扩展函数，也是个挂起函数
@@ -39,5 +41,11 @@ object WeatherNetwork {
             })
         }
     }
+
+    suspend fun getRealtimeWeather(lng: String, lat: String) =
+        weatherService.getRealtimeWeather(lng, lat).await()
+
+    suspend fun getDailyWeather(lng: String, lat: String) =
+        weatherService.getDailyWeather(lng, lat).await()
 
 }

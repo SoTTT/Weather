@@ -20,4 +20,5 @@ class WeatherApplication : Application() {
         super.onCreate()
         context = applicationContext;
     }
+
 }
