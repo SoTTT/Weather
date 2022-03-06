@@ -17,12 +17,11 @@ object WeatherNetwork {
 
     private val weatherService = ServiceCreator.create<WeatherService>()
 
-    suspend fun searchPlaces(query: String) = placeService.searchPlace(query).await()
 
     //await是个对Call<T>的扩展函数，也是个挂起函数
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->
-            enqueue(object : Callback<T> {
+            this.enqueue(object : Callback<T> {
 
                 //onResponse是响应成功的回调函数
                 override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -41,6 +40,8 @@ object WeatherNetwork {
             })
         }
     }
+
+    suspend fun searchPlaces(query: String) = placeService.searchPlace(query).await()
 
     suspend fun getRealtimeWeather(lng: String, lat: String) =
         weatherService.getRealtimeWeather(lng, lat).await()

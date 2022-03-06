@@ -3,7 +3,7 @@ package com.example.weather.logic.dao
 import android.content.Context
 import androidx.core.content.edit
 import com.example.weather.WeatherApplication
-import com.example.weather.logic.model.Place
+import com.example.weather.logic.model.PlaceResponse.Place
 import com.google.gson.Gson
 
 object PlaceDao {

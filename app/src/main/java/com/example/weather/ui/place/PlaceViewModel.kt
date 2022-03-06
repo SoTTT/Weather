@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.weather.logic.Repository
-import com.example.weather.logic.model.Place
+import com.example.weather.logic.model.PlaceResponse.Place
 
 class PlaceViewModel : ViewModel() {
 
