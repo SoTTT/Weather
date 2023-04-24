@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
 import com.example.weather.logic.model.PlaceResponse.Place
-import com.example.weather.logic.model.Weather
 import com.example.weather.ui.weather.WeatherActivity
 
 class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: List<Place>) :

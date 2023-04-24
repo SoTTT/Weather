@@ -9,10 +9,9 @@ import retrofit2.http.Path
 
 interface WeatherService {
 
-    @GET("v2.5/${WeatherApplication.TOKEN}/{lng},{lat}/realtime.json")
+    @GET("weather/weatherInfo?key=${WeatherApplication.KEY}?city={adcode}?extensions=base")
     fun getRealtimeWeather(
-        @Path("lng") lng: String,
-        @Path("lat") lat: String
+        @Path("adcode") code: String,
     ): Call<RealtimeResponse>
 
     @GET("v2.5/${WeatherApplication.TOKEN}/{lng},{lat}/realtime.json")

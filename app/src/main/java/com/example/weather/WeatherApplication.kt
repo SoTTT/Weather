@@ -13,6 +13,7 @@ class WeatherApplication : Application() {
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
 
+        const val KEY = "c8aebaf6871ce3642c06c91378d2c74f"
         const val TOKEN = ""
     }
 

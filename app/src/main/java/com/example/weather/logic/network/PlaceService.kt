@@ -12,7 +12,7 @@ interface PlaceService {
     //searchPlace返回的应该是PlaceService类的对象
     //Retrofit库规定接口函数的返回值应该使用Call接口并将真正要返回的类型包裹起来
     //searchPlace函数用来发起搜索城市的数据请求
-    @GET("v2/place?taken=${WeatherApplication.TOKEN}&lang=zh_CN")
-    fun searchPlace(@Query("query") query: String): Call<PlaceResponse>
+    @GET("place/text?key=${WeatherApplication.KEY}&extensions=all")
+    fun searchPlace(@Query("keywords") keywords: String): Call<PlaceResponse>
 
 }
