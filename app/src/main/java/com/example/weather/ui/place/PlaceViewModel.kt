@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.weather.logic.Repository
+import com.example.weather.logic.model.GaoDePlaceResponse
 import com.example.weather.logic.model.PlaceResponse.Place
 
 class PlaceViewModel : ViewModel() {
@@ -19,6 +20,10 @@ class PlaceViewModel : ViewModel() {
         Repository.searchPlaces(it)
     }
 
+    val gaoDePlaceLiveData = Transformations.switchMap(searchLiveData) {
+        Repository.searchGaoDePlaces(it)
+    }
+
     fun searchPlaces(query: String) {
         searchLiveData.value = query
     }
@@ -28,5 +33,11 @@ class PlaceViewModel : ViewModel() {
     fun getSavedPlace() = Repository.getSavedPlace()
 
     fun isPlaceSaved() = Repository.isPlaceSaved()
+
+    fun saveGaoDePlace(place: GaoDePlaceResponse.Place) = Repository.savePlace(place)
+
+    fun getSavedGaoDePlace() = Repository.getSavedGaoDePlace()
+
+    fun isGaoDePlaceSaved() =Repository.isGaoDePlaceSaved()
 
 }

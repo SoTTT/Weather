@@ -128,5 +128,5 @@ object Repository {
 
     fun getSavedGaoDePlace() = PlaceDao.getSavedGaoDePlace()
 
-    fun isGaoDeSaved() = PlaceDao.isPlaceSaved()
+    fun isGaoDePlaceSaved() = PlaceDao.isPlaceSaved()
 }
