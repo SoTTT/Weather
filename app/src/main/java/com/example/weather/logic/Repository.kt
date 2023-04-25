@@ -3,6 +3,8 @@ package com.example.weather.logic
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.weather.logic.dao.PlaceDao
+import com.example.weather.logic.model.GaoDePlaceResponse
+import com.example.weather.logic.model.GaoDeWeather
 import com.example.weather.logic.model.PlaceResponse.Place
 import com.example.weather.logic.model.Weather
 import com.example.weather.logic.network.WeatherNetwork
@@ -16,7 +18,7 @@ object Repository {
         return liveData(Dispatchers.IO) {
             val result = try {
                 val placeResponse = WeatherNetwork.searchPlaces(query)
-                if (placeResponse.status == "ok") {
+                if (placeResponse.status.lowercase() == "ok") {
                     val places = placeResponse.places
                     Result.success(places)
                 } else {
@@ -24,11 +26,28 @@ object Repository {
                 }
 
             } catch (e: Exception) {
-                Result.failure<List<Place>>(e)
+                Result.failure(e)
             }
             emit(result)
         }
     }
+
+    fun searchGaoDePlaces(query: String): LiveData<Result<List<GaoDePlaceResponse.Place>>> {
+        return liveData(Dispatchers.IO) {
+            val result = try {
+                val response = WeatherNetwork.searchGaoDePlaces(query)
+                if (response.status.lowercase() == "ok") {
+                    Result.success(response.places)
+                } else {
+                    Result.failure(RuntimeException("response status is ${response.status}"))
+                }
+            } catch (ex: java.lang.Exception) {
+                Result.failure(ex)
+            }
+            emit(result)
+        }
+    }
+
 
     fun refreshWeather(lng: String, lat: String): LiveData<Result<Weather>> {
         return liveData(Dispatchers.IO) {
@@ -57,11 +76,47 @@ object Repository {
                     }
                 }
             } catch (e: Exception) {
-                Result.failure<Weather>(e);
+                Result.failure(e);
             }
             emit(result)
         }
     }
+
+    fun refreshWeather(adcode: String): LiveData<Result<GaoDeWeather>> {
+        return liveData(Dispatchers.IO) {
+            val result = try {
+                coroutineScope {
+                    val deferredRealtime = async {
+                        WeatherNetwork.getGaoDeRealtimeWeather(adcode)
+                    }
+                    val deferredForecast = async {
+                        WeatherNetwork.getDailyWeather(adcode)
+                    }
+                    val realtimeResponse = deferredRealtime.await()
+                    val forecastResponse = deferredForecast.await()
+                    if (realtimeResponse.status.lowercase() == "ok" && forecastResponse.status.lowercase() == "ok") {
+                        Result.success(
+                            GaoDeWeather(
+                                realtimeResponse.lives[realtimeResponse.count],
+                                forecastResponse.forecasts
+                            )
+                        )
+                    } else {
+                        Result.failure(
+                            RuntimeException(
+                                "realtime response status is ${realtimeResponse.status} "
+                                        + "and daily response status is ${forecastResponse.status}"
+                            )
+                        )
+                    }
+                }
+            } catch (ex: java.lang.Exception) {
+                Result.failure(ex)
+            }
+            emit(result)
+        }
+    }
+
 
     fun savePlace(place: Place) = PlaceDao.savePlace(place)
 
@@ -69,4 +124,9 @@ object Repository {
 
     fun isPlaceSaved() = PlaceDao.isPlaceSaved()
 
+    fun savePlace(place: GaoDePlaceResponse.Place) = PlaceDao.savePlace(place)
+
+    fun getSavedGaoDePlace() = PlaceDao.getSavedGaoDePlace()
+
+    fun isGaoDeSaved() = PlaceDao.isPlaceSaved()
 }

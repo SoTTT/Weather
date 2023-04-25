@@ -1,5 +1,8 @@
 package com.example.weather.logic.network
 
+import com.example.weather.logic.model.GaoDeForecastResponse
+import com.example.weather.logic.model.GaoDePlaceResponse
+import com.example.weather.logic.model.GaoDeRealtimeResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +19,10 @@ object WeatherNetwork {
     private val placeService = ServiceCreator.create<PlaceService>()
 
     private val weatherService = ServiceCreator.create<WeatherService>()
+
+    private val gaoDeWeatherService = ServiceCreator.create<GaoDeForecastService>()
+
+    private val gaoDePlaceService = ServiceCreator.create<GaoDePlaceService>()
 
 
     //await是个对Call<T>的扩展函数，也是个挂起函数
@@ -49,4 +56,12 @@ object WeatherNetwork {
     suspend fun getDailyWeather(lng: String, lat: String) =
         weatherService.getDailyWeather(lng, lat).await()
 
+    suspend fun searchGaoDePlaces(query: String): GaoDePlaceResponse =
+        gaoDePlaceService.searchPlace(query).await()
+
+    suspend fun getGaoDeRealtimeWeather(adcode: String): GaoDeRealtimeResponse =
+        gaoDeWeatherService.getRealtime(adcode).await()
+
+    suspend fun getDailyWeather(adcode: String): GaoDeForecastResponse =
+        gaoDeWeatherService.getForecast(adcode).await()
 }
