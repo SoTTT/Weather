@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface GaoDePlaceService {
 
-    @GET("geocode/geo?key=${WeatherApplication.KEY}")
-    fun searchPlace(@Query("address") keywords: String): Call<GaoDePlaceResponse>
+    @GET("place/text?key=${WeatherApplication.KEY}&offset=10&extensions=all")
+    fun searchPlace(@Query("keywords") keywords: String): Call<GaoDePlaceResponse>
 
 }

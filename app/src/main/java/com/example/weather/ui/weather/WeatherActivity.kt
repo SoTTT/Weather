@@ -19,9 +19,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.databinding.ActivityWeatherBinding
+import com.example.weather.logic.model.GaoDeWeather
 import com.example.weather.logic.model.Weather
 import com.example.weather.logic.model.fromContextStringSource
 import com.example.weather.logic.model.getSky
+import com.example.weather.util.Util
 import java.util.*
 
 class WeatherActivity : AppCompatActivity() {
@@ -31,7 +33,7 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     val viewModel by lazy {
-        ViewModelProvider(this).get(WeatherViewModel::class.java)
+        ViewModelProvider(this)[WeatherViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,10 +53,13 @@ class WeatherActivity : AppCompatActivity() {
         if (viewModel.locationLat.isEmpty()) {
             viewModel.locationLat = intent.getStringExtra("location_lat") ?: ""
         }
-        viewModel.weatherLiveData.observe(this, Observer {
+        if (viewModel.adcode.isEmpty()) {
+            viewModel.adcode = intent.getStringExtra("place_adcode") ?: ""
+        }
+        viewModel.gaoDeWeatherLiveData.observe(this, Observer {
             val weather = it.getOrNull()
             if (weather != null) {
-                showWeatherInfo(weather)
+                showGaoDeWeatherInfo(weather)
             } else {
                 Toast.makeText(
                     this,
@@ -92,10 +97,12 @@ class WeatherActivity : AppCompatActivity() {
 
             }
         })
+
+        refreshWeather()
     }
 
     fun refreshWeather() {
-        viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        viewModel.refreshWeather(viewModel.adcode)
         binding.swipeRefresh.isRefreshing = true
     }
 
@@ -146,5 +153,57 @@ class WeatherActivity : AppCompatActivity() {
         binding.fileIndex.dressingText.text = lifeIndex.dressing[0].desc
         binding.weatherLayout.visibility = View.VISIBLE
 
+    }
+
+    private fun showGaoDeWeatherInfo(weather: GaoDeWeather) {
+        binding.now.placeName.text = viewModel.placeName
+        val realtime = weather.realtimeWeather
+        val forecasts = weather.forecastWeather
+
+        binding.now.currentTemp.text = realtime.temperature.toFloat().toString()
+        binding.now.currentSky.text =
+            Util.castGaoDeSkyConToSkyCon(realtime.weather).info.fromContextStringSource(this)
+
+        binding.now.currentAQI.text = "unknown"
+        binding.now.nowLayout.setBackgroundResource(Util.castGaoDeSkyConToSkyCon(realtime.weather).bg)
+
+        binding.forecast.forecastLayout.removeAllViews()
+
+        val days = forecasts[0].casts.size
+        for (index in 0 until days) {
+            val forecast = forecasts[0].casts[index]
+            val dayTemperature = forecast.dayTemperature
+            val nightTemperature = forecast.nightTemperature
+            val view = LayoutInflater.from(this)
+                .inflate(R.layout.forecast_item, binding.forecast.forecastLayout, false)
+
+            val dateInfo = view.findViewById<TextView>(R.id.dateInfo)
+            val skyIcon = view.findViewById<ImageView>(R.id.skyIcon)
+            val skyInfo = view.findViewById<TextView>(R.id.skyInfo)
+
+            val temperatureInfo = view.findViewById<TextView>(R.id.temperatureInfo)
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+            dateInfo.text = forecast.date.split(" ")[0]
+            val sky = Util.castGaoDeSkyConToSkyCon(forecast.dayWeather)
+            skyIcon.setImageResource(sky.icon)
+            skyInfo.text = sky.info.fromContextStringSource(this)
+
+            val tempText = "${nightTemperature.toFloat()} ~ ${dayTemperature.toFloat()}"
+            temperatureInfo.text = tempText
+
+            binding.forecast.forecastLayout.addView(view)
+
+
+        }
+
+        val unknownText = "unknown"
+        binding.fileIndex.coldRiskText.text = unknownText
+        binding.fileIndex.carWashingText.text = unknownText
+        binding.fileIndex.ultravioletText.text = unknownText
+        binding.fileIndex.dressingText.text = unknownText
+        binding.weatherLayout.visibility = View.VISIBLE
+
+        binding.swipeRefresh.isRefreshing = false
     }
 }

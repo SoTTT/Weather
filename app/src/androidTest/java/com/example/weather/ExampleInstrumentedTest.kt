@@ -63,24 +63,19 @@ class ExampleInstrumentedTest {
         val castService = ServiceCreator.create<GaoDeForecastService>()
         runBlocking {
             val response = async {
-                service.searchPlace("北京市朝阳区阜通东大街6号").await()
+                service.searchPlace("山西大学").await()
             }
-            val code = response.await().places[0].adcode
-            Log.d("TEST", "useGaoDePlaceAPI: $code")
-            val castResponse = async {
-                castService.getForecast(code).await()
-            }
-            Log.d("TEST", "useGaoDePlaceAPI: ${castResponse.await()}")
-            val realtimeResponse = async {
-                castService.getRealtime(code).await()
-            }
-            Log.d("TEST", "useGaoDePlaceAPI: ${realtimeResponse.await()}")
+//            val code = response.await().places[0].adcode
+            Log.d("TEST", "useGaoDePlaceAPI: ${response.await()}")
+//            val castResponse = async {
+//                castService.getForecast(code).await()
+//            }
+//            Log.d("TEST", "useGaoDePlaceAPI: ${castResponse.await()}")
+//            val realtimeResponse = async {
+//                castService.getRealtime(code).await()
+//            }
+//            Log.d("TEST", "useGaoDePlaceAPI: ${realtimeResponse.await()}")
         }
         assert(true)
-    }
-
-    @Test
-    fun useGaoDeCastAPI() {
-
     }
 }

@@ -36,7 +36,7 @@ object Repository {
         return liveData(Dispatchers.IO) {
             val result = try {
                 val response = WeatherNetwork.searchGaoDePlaces(query)
-                if (response.status.lowercase() == "ok") {
+                if (response.info.lowercase() == "ok") {
                     Result.success(response.places)
                 } else {
                     Result.failure(RuntimeException("response status is ${response.status}"))
@@ -94,10 +94,10 @@ object Repository {
                     }
                     val realtimeResponse = deferredRealtime.await()
                     val forecastResponse = deferredForecast.await()
-                    if (realtimeResponse.status.lowercase() == "ok" && forecastResponse.status.lowercase() == "ok") {
+                    if (realtimeResponse.info.lowercase() == "ok" && forecastResponse.info.lowercase() == "ok") {
                         Result.success(
                             GaoDeWeather(
-                                realtimeResponse.lives[realtimeResponse.count],
+                                realtimeResponse.lives[realtimeResponse.count - 1],
                                 forecastResponse.forecasts
                             )
                         )

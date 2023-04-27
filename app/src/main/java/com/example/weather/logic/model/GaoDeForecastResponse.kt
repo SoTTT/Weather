@@ -28,6 +28,7 @@ data class GaoDeForecastResponse(
             @SerializedName("daypower") val dayPower: String,
             @SerializedName("nightpower") val nightPower: String,
         )
+
     }
 }
 

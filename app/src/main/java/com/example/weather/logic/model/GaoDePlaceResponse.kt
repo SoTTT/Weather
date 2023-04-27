@@ -6,14 +6,14 @@ data class GaoDePlaceResponse(
     val status: String,
     val count: String,
     val info: String,
-    @SerializedName("geocodes") val places: List<Place>
+    @SerializedName("pois") val places: List<Place>
 ) {
     data class Place(
-        val province: String,
-        val city: String,
+        @SerializedName("cityname") val city: String,
         val citycode: String,
-        val district: String,
-        val location: String, val adcode: String
+        val location: String,
+        val adcode: String,
+        val address: String
     ) {
         val lng by lazy {
             location.split(",")[0]

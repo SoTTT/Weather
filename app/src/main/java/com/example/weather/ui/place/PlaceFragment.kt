@@ -27,10 +27,10 @@ class PlaceFragment : Fragment() {
 
     @Suppress("MemberVisibilityCanBePrivate")
     val viewModel by lazy {
-        ViewModelProvider(this).get(PlaceViewModel::class.java)
+        ViewModelProvider(this)[PlaceViewModel::class.java]
     }
 
-    private lateinit var adapter: PlaceAdapter
+    private lateinit var adapter: GaoDePlaceAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,41 +45,43 @@ class PlaceFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (viewModel.isPlaceSaved() && activity is MainActivity) {
-            val place = viewModel.getSavedPlace()
+            val place = viewModel.getSavedGaoDePlace()
             val intent = Intent(context, WeatherActivity::class.java).apply {
-                putExtra("location_lng", place.location.lng)
-                putExtra("location_lat", place.location.lat)
-                putExtra("place_name", place.name)
+                putExtra("location_lng", place.lng)
+                putExtra("location_lat", place.lat)
+                putExtra("place_name", place.city)
+                putExtra("place_adcode", place.adcode)
             }
             startActivity(intent)
             activity?.finish()
             return
         }
         val layoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.layoutManager = layoutManager
         //将View和它对应的Adapter联系起来
-        adapter = PlaceAdapter(this, viewModel.placeList)
+        adapter = GaoDePlaceAdapter(this, viewModel.gaoDePlaceList)
         binding.recyclerView.adapter = adapter
         binding.searchPlaceEdit.addTextChangedListener {
             val context = it.toString()
             if (context.isNotEmpty()) {
                 viewModel.searchPlaces(context)
             } else {
-                binding.recyclerView.visibility = View.GONE
-                binding.bgImageView.visibility = View.VISIBLE
-                viewModel.placeList.clear()
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.bgImageView.visibility = View.GONE
+                viewModel.gaoDePlaceList.clear()
                 adapter.notifyDataSetChanged()
             }
         }
 
         //观察viewModel中的LiveData并处理观察的结果
-        viewModel.placeLiveData.observe(this as LifecycleOwner, Observer { result ->
+        viewModel.gaoDePlaceLiveData.observe(this as LifecycleOwner, Observer { result ->
             val places = result.getOrNull()
             if (places != null) {
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.bgImageView.visibility = View.GONE
-                viewModel.placeList.clear()
+                viewModel.gaoDePlaceList.clear()
                 //将place中包含的结果（一个List<Place>类型的对象）的内容添加到viewModel中
-                viewModel.placeList.addAll(places)
+                viewModel.gaoDePlaceList.addAll(places)
                 adapter.notifyDataSetChanged()
             } else {
                 Toast.makeText(activity, R.string.no_search_result, Toast.LENGTH_LONG)

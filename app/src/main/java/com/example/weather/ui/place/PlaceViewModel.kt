@@ -13,6 +13,8 @@ class PlaceViewModel : ViewModel() {
 
     val placeList = ArrayList<Place>()
 
+    val gaoDePlaceList = ArrayList<GaoDePlaceResponse.Place>()
+
     //要给placeLiveData的LiveData是从外部返回的，所以用switchMap方法转换
     //这个LiveData中保存了查找位置后的返回结果
     //通过注册观察组件，可以在其变化时通知其它组件
@@ -38,6 +40,6 @@ class PlaceViewModel : ViewModel() {
 
     fun getSavedGaoDePlace() = Repository.getSavedGaoDePlace()
 
-    fun isGaoDePlaceSaved() =Repository.isGaoDePlaceSaved()
+    fun isGaoDePlaceSaved() = Repository.isGaoDePlaceSaved()
 
 }

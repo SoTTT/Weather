@@ -10,15 +10,29 @@ class WeatherViewModel : ViewModel() {
 
     private val locationLiveData = MutableLiveData<Location>()
 
+    private val adcodeLiveData = MutableLiveData<String>()
+
     var locationLng = ""
     var locationLat = ""
     var placeName = ""
+
+    var adcode = ""
 
     val weatherLiveData = Transformations.switchMap(locationLiveData) { location ->
         Repository.refreshWeather(location.lng, location.lat)
     }
 
-    fun refreshWeather(lng: String, lat: String): Unit {
+    val gaoDeWeatherLiveData = Transformations.switchMap(adcodeLiveData) {
+        Repository.refreshWeather(it)
+    }
+
+
+    fun refreshWeather(lng: String, lat: String) {
         locationLiveData.value = Location(lng, lat)
     }
+
+    fun refreshWeather(adcode: String) {
+        adcodeLiveData.value = adcode
+    }
+
 }
